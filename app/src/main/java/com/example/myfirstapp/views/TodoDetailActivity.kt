@@ -12,13 +12,13 @@ import com.example.myfirstapp.views.MainActivityTodo.Companion.TODO_MODEL_EXTRA
 
 class TodoDetailActivity : AppCompatActivity() {
 
-    lateinit var todoTitleTextView: TextView
-    lateinit var todoDateTextView: TextView
-    lateinit var todoDescriptionTextView: TextView
+    private lateinit var todoTitleTextView: TextView
+    private lateinit var todoDateTextView: TextView
+    private lateinit var todoDescriptionTextView: TextView
 
-    lateinit var deleteImageView: ImageView
-    lateinit var updateImageView: ImageView
-    lateinit var validateTodoButton: Button
+    private lateinit var deleteImageView: ImageView
+    private lateinit var updateImageView: ImageView
+    private lateinit var validateTodoButton: Button
 
     // Data from intent
     private lateinit var todoDetailTitle: String
@@ -40,7 +40,6 @@ class TodoDetailActivity : AppCompatActivity() {
         if (this.intent.hasExtra(TODO_MODEL_EXTRA)){
 
             val todoData = intent.getParcelableExtra<TodoModel>(TODO_MODEL_EXTRA)!!
-
             this.todoDetailTitle = todoData.title ?: ""
             this.todoDetailDesc = todoData.description ?: ""
             this.todoDetailDate = todoData.date ?: ""
