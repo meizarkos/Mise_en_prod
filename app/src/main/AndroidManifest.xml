@@ -28,6 +28,7 @@
         android:theme="@style/Base.Theme.MyFirstApp"
         tools:targetApi="31">
         <activity
+            android:parentActivityName=".views.MainActivityTodo"
             android:name=".views.TodoDetailActivity"
             android:exported="false" />
         <activity

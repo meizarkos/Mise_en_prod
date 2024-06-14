@@ -100,10 +100,7 @@ class MainActivityTodo: AppCompatActivity(), TodoOnClickLListener {
 
     override fun displayTodoDetail(todo: TodoModel) {
         Intent(this, TodoDetailActivity::class.java).also {
-            it.putExtra("TODO_TITLE_TEXT", todo.title)
-            it.putExtra("TODO_DESC_TEXT", todo.description)
-            it.putExtra("TODO_DATE_TEXT", todo.date)
-
+            it.putExtra(TODO_MODEL_EXTRA, todo)
             startActivity(it)
         }
     }

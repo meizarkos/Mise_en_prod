@@ -7,6 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myfirstapp.R
+import com.example.myfirstapp.model.TodoModel
+import com.example.myfirstapp.views.MainActivityTodo.Companion.TODO_MODEL_EXTRA
 
 class TodoDetailActivity : AppCompatActivity() {
 
@@ -35,13 +37,13 @@ class TodoDetailActivity : AppCompatActivity() {
 
 
     private fun getIntentExtraData() {
-        if (this.intent.hasExtra("TODO_TITLE_TEXT") &&
-            this.intent.hasExtra("TODO_DESC_TEXT") &&
-            this.intent.hasExtra("TODO_DATE_TEXT")) {
+        if (this.intent.hasExtra(TODO_MODEL_EXTRA)){
 
-            this.todoDetailTitle = intent.getStringExtra("TODO_TITLE_TEXT")!!
-            this.todoDetailDesc = intent.getStringExtra("TODO_DESC_TEXT")!!
-            this.todoDetailDate = intent.getStringExtra("TODO_DATE_TEXT")!!
+            val todoData = intent.getParcelableExtra<TodoModel>(TODO_MODEL_EXTRA)!!
+
+            this.todoDetailTitle = todoData.title ?: ""
+            this.todoDetailDesc = todoData.description ?: ""
+            this.todoDetailDate = todoData.date ?: ""
         }
     }
     private fun setupViews() {
