@@ -36,6 +36,7 @@ jobs:
   build-and-upload:
     executor:
       name: android/android-machine
+      tag: default
     environment: # You can change the following
       release_notes: ""
       git_release_notes: true
