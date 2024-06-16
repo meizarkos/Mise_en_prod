@@ -1,15 +1,19 @@
 package com.example.myfirstapp.views
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstapp.R
 import com.example.myfirstapp.model.TodoModel
+import com.example.myfirstapp.network.RetrofitClient
 import com.example.myfirstapp.network.TodoServices
 import com.example.myfirstapp.network.TodosRepository
 import com.example.myfirstapp.viewmodels.TodoViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -21,28 +25,26 @@ class MainActivityTodo: AppCompatActivity(), TodoOnClickLListener {
 
     // Views
     private lateinit var todoListRecyclerView: RecyclerView
-
-    // Data
-    lateinit var retrofitClient: Retrofit
-    lateinit var todoService: TodoServices
-
-    lateinit var todoViewModel: TodoViewModel
+    private lateinit var redoRequest: FloatingActionButton
 
 
     companion object {
         val TODO_MODEL_EXTRA = "TODO_MODEL_EXTRA"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-
-        this.createRetrofitClient()
-        this.createTodoService()
-        this.initViewModel()
-
         this.observeTodoListData()
-        this.fetchTodoList()
+        this.setButton()
+    }
+
+    private fun setButton(){
+        this.redoRequest = findViewById(R.id.redo_request)
+        this.redoRequest.setOnClickListener {
+            this.fetchTodoList()
+        }
     }
 
     private fun setUpActivityViews(data: List<TodoModel>) {
@@ -59,48 +61,26 @@ class MainActivityTodo: AppCompatActivity(), TodoOnClickLListener {
         this.todoListRecyclerView.setAdapter(todoAdapter)
     }
 
-    // Setup HTTP client + services
-    private fun createRetrofitClient() {
-        val gsonConverter =
-            GsonConverterFactory.create(
-                GsonBuilder().create()
-            )
-        this.retrofitClient = Retrofit.Builder()
-            .baseUrl("https://my-json-server.typicode.com")
-            .addConverterFactory(gsonConverter)
-            .build()
-    }
-
-    private fun createTodoService() {
-        this.todoService = this.retrofitClient.create(TodoServices::class.java)
-    }
-
-    private fun initViewModel() {
-        this.todoViewModel = TodoViewModel(
-            TodosRepository(this.todoService),
-            this
-        )
-    }
-
 
     // Data fetch and observing
     private fun fetchTodoList() {
         // viewModel.getTodo()
-        this.todoViewModel.fetchTodoFromRepo()
+        TodoViewModel.fetchTodoFromRepo()
     }
 
 
     private fun observeTodoListData() {
-        this.todoViewModel.todos.observe(this) { todoList ->
+        TodoViewModel.todos.observe(this) { todoList ->
             this.setUpActivityViews(todoList)
         }
     }
 
 
 
-    override fun displayTodoDetail(todo: TodoModel) {
+    override fun displayTodoDetail(todo: TodoModel, position: Int) {
         Intent(this, TodoDetailActivity::class.java).also {
             it.putExtra(TODO_MODEL_EXTRA, todo)
+            it.putExtra("position", position)
             startActivity(it)
         }
     }
@@ -109,7 +89,7 @@ class MainActivityTodo: AppCompatActivity(), TodoOnClickLListener {
 }
 
 interface TodoOnClickLListener {
-    fun displayTodoDetail(todo: TodoModel)
+    fun displayTodoDetail(todo: TodoModel, position: Int)
 }
 
 fun verifyPassword(motDePasse: String): List<String> {

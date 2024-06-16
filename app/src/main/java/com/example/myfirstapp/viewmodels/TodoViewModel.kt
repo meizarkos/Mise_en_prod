@@ -6,26 +6,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.myfirstapp.model.TodoDto
 import com.example.myfirstapp.model.TodoModel
+import com.example.myfirstapp.network.RetrofitClient
 import com.example.myfirstapp.network.TodosRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.log
 
-class TodoViewModel(private val todoRepository: TodosRepository, val context: Context) {
+object TodoViewModel{
     var todos: MutableLiveData<ArrayList<TodoModel>> = MutableLiveData()
 
     fun fetchTodoFromRepo() {
-        val todosApiResponse = this.todoRepository.fetchTodos()
+        val todosApiResponse = TodosRepository(
+            RetrofitClient.createTodoService()).fetchTodos()
 
         todosApiResponse.enqueue(object : Callback<List<TodoDto>> {
             override fun onFailure(p0: Call<List<TodoDto>>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
+
             }
 
             override fun onResponse(p0: Call<List<TodoDto>>, response: Response<List<TodoDto>>) {
                 val responseBody: List<TodoDto> = response.body() ?: listOf()
                 val mappedResponse = responseBody.map {
                     TodoModel(
+                        it.id,
                         it.title,
                         it.description,
                         it.due_date,

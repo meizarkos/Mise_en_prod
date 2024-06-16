@@ -5,6 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        android:layout_marginStart="-55dp"
+        app:cardCornerRadius="40dp">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/hide_keyboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_gravity="center|start"
+            app:fabCustomSize="40dp"
+            android:src="@drawable/ic_action_name"
+            android:textSize="20sp"
+            android:importantForAccessibility="no" />
+
+    </androidx.cardview.widget.CardView>
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linear_layout_main"
         android:layout_width="match_parent"
@@ -37,7 +59,7 @@
             app:drawableStartCompat="@drawable/baseline_calendar_today_24"
             app:drawableTint="@color/yellow_note_bg" />
 
-        <TextView
+        <EditText
             android:id="@+id/todo_detail_description_text_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -3,8 +3,9 @@ package com.example.myfirstapp.model
 import android.os.Parcel
 import android.os.Parcelable
 
-data class TodoModel(val title: String?, val description: String?, val date: String?, val isChecked: Boolean): Parcelable {
+data class TodoModel(val id:Int?, val title: String?, var description: String?, val date: String?, var isChecked: Boolean): Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -17,6 +18,7 @@ data class TodoModel(val title: String?, val description: String?, val date: Str
     }
 
     override fun writeToParcel(parcel: Parcel, p1: Int) {
+        parcel.writeValue(id)
         parcel.writeString(title)
         parcel.writeString(description)
         parcel.writeString(date)

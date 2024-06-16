@@ -26,7 +26,7 @@ class TodoListAdapter(val todoList: List<TodoModel>, private val todoClickHandle
         holder.bind(currentTodoData)
         holder.itemView.setOnClickListener {
             //Toast.makeText(holder.itemView.context, "Selected note n°${position + 1}", Toast.LENGTH_LONG).show()
-            todoClickHandler.displayTodoDetail(currentTodoData)
+            todoClickHandler.displayTodoDetail(currentTodoData, position)
         }
     }
 
